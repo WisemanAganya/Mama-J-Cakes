@@ -1,0 +1,104 @@
+{
+  "entities": {
+    "Cake": {
+      "title": "Cake",
+      "description": "Information about a cake product.",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "description": { "type": "string" },
+        "price": { "type": "number" },
+        "category": { "type": "string", "description": "e.g., Wedding, Birthday, Corporate" },
+        "imageUrl": { "type": "string" },
+        "servings": { "type": "string" },
+        "flavors": { "type": "array", "items": { "type": "string" } },
+        "rating": { "type": "number" }
+      },
+      "required": ["name", "price", "category", "imageUrl"]
+    },
+    "Order": {
+      "title": "Order",
+      "description": "An order or booking made by a customer.",
+      "type": "object",
+      "properties": {
+        "customerId": { "type": "string" },
+        "customerName": { "type": "string" },
+        "customerPhone": { "type": "string" },
+        "items": { "type": "array" },
+        "total": { "type": "number" },
+        "deposit": { "type": "number" },
+        "status": { "type": "string", "enum": ["pending", "confirmed", "in-progress", "ready", "delivered", "cancelled"] },
+        "paymentStatus": { "type": "string", "enum": ["unpaid", "partially-paid", "fully-paid"] },
+        "paymentReference": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "eventDate": { "type": "string", "format": "date-time" },
+        "deliveryAddress": { "type": "string" },
+        "type": { "type": "string", "enum": ["order", "booking"] }
+      },
+      "required": ["customerName", "customerPhone", "total", "status", "paymentStatus", "createdAt"]
+    },
+    "BlogPost": {
+      "title": "Blog Post",
+      "description": "A blog post or event highlight.",
+      "type": "object",
+      "properties": {
+        "title": { "type": "string" },
+        "content": { "type": "string" },
+        "excerpt": { "type": "string" },
+        "imageUrl": { "type": "string" },
+        "author": { "type": "string" },
+        "date": { "type": "string", "format": "date-time" }
+      },
+      "required": ["title", "content", "date"]
+    },
+    "Enrollment": {
+      "title": "Enrollment",
+      "description": "A student enrollment in training or internship.",
+      "type": "object",
+      "properties": {
+        "studentName": { "type": "string" },
+        "studentEmail": { "type": "string" },
+        "studentPhone": { "type": "string" },
+        "courseId": { "type": "string" },
+        "status": { "type": "string", "enum": ["pending", "enrolled", "completed"] },
+        "paymentStatus": { "type": "string", "enum": ["unpaid", "paid"] },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["studentName", "studentEmail", "courseId", "status"]
+    },
+    "User": {
+      "title": "User",
+      "description": "User profile information.",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "email": { "type": "string" },
+        "role": { "type": "string", "enum": ["admin", "customer"] },
+        "phone": { "type": "string" }
+      },
+      "required": ["email", "role"]
+    }
+  },
+  "firestore": {
+    "cakes": {
+      "schema": "Cake",
+      "description": "Collection of all cake products."
+    },
+    "orders": {
+      "schema": "Order",
+      "description": "Collection of customer orders and event bookings."
+    },
+    "blogPosts": {
+      "schema": "BlogPost",
+      "description": "Collection of stories and event highlights."
+    },
+    "enrollments": {
+      "schema": "Enrollment",
+      "description": "Collection of training and internship enrollments."
+    },
+    "users": {
+      "schema": "User",
+      "description": "User profiles and roles."
+    }
+  }
+}
