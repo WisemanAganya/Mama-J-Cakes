@@ -1,20 +1,28 @@
-<div align="center">
-<img width="1200" height="475" alt="GHBanner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
-</div>
+# Mama-J-Cakes
 
-# Run and deploy your AI Studio app
+This is the official repository for **Mama J's Cakes**, a premium artisanal pâtisserie platform.
 
-This contains everything you need to run your app locally.
+## Features
+- **Dynamic Hero Slider**: Fully customizable from the admin dashboard.
+* **Premium UI**: Refined "Warm Ivory" theme with cinematic animations.
+- **Location-Based Delivery**: Automated fee calculation for Nairobi and beyond.
+- **Admin Management Portal**: Real-time control over inventory, orders, and site settings.
+- **Bespoke Ordering**: Integrated deposit handling and event-based selection.
 
-View your app in AI Studio: https://ai.studio/apps/cca264f0-9f36-4e3e-a8a0-55bcf98a8a4b
+## Tech Stack
+- **Frontend**: React 19, Vite, Tailwind CSS 4, Framer Motion
+- **Backend**: Firebase Firestore, Express (Node.js)
+- **Icons**: Lucide React
+- **Charts**: Recharts
 
-## Run Locally
+## Deployment
+This project is optimized for deployment on **Vercel**.
 
-**Prerequisites:**  Node.js
+### Setup
+1. Clone the repository
+2. Install dependencies: `npm install`
+3. Run locally: `npm run dev`
+4. Build for production: `npm run build`
 
-
-1. Install dependencies:
-   `npm install`
-2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
-3. Run the app:
-   `npm run dev`
+---
+*Crafted with passion by Wiseman Aganya*
