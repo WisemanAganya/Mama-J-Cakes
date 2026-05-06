@@ -12,6 +12,7 @@ export interface Cake {
   colorOptions: string[];
   themeOptions?: string[];
   rating: number;
+  artisanDetailUrl?: string;
 }
 
 export interface Order {

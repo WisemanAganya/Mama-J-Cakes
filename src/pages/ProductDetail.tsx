@@ -171,6 +171,30 @@ export default function ProductDetail() {
               </div>
               <p className="text-slate-900 font-serif italic text-lg leading-snug">"{cake.description}"</p>
             </div>
+            
+            {/* Artisan Detail Zoom (If available) */}
+            {cake.artisanDetailUrl && (
+              <motion.div 
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                className="absolute -bottom-20 -right-20 p-10 bg-white/90 backdrop-blur-2xl rounded-[3rem] shadow-3xl max-w-[320px] hidden xl:block border border-white group/zoom"
+              >
+                <div className="flex items-center space-x-3 mb-6">
+                  <div className="w-2 h-2 bg-ruby rounded-full animate-pulse" />
+                  <span className="text-[10px] font-bold uppercase tracking-[0.3em] text-slate-950">Artisan Perspective</span>
+                </div>
+                <div className="aspect-square rounded-2xl overflow-hidden mb-6 border border-slate-100">
+                  <img 
+                    src={cake.artisanDetailUrl} 
+                    className="w-full h-full object-cover transition-transform duration-700 group-hover/zoom:scale-125" 
+                    alt="Detail Texture" 
+                  />
+                </div>
+                <p className="text-slate-400 font-sans text-[10px] leading-relaxed uppercase tracking-widest font-bold">
+                  High-fidelity texture analysis of the hand-piped accents.
+                </p>
+              </motion.div>
+            )}
           </motion.div>
 
           {/* Details Column */}

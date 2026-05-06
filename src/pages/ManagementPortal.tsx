@@ -21,6 +21,22 @@ export default function ManagementPortal() {
   
   const [settings, setSettings] = useState<WebsiteSettings | null>(null);
   const [isSavingSettings, setIsSavingSettings] = useState(false);
+  
+  // New Cake Form State
+  const [formData, setFormData] = useState<Partial<Cake>>({
+    name: '',
+    description: '',
+    price: 0,
+    category: 'Wedding',
+    eventCategories: [],
+    imageUrl: '',
+    artisanDetailUrl: '',
+    servings: '',
+    flavors: [],
+    availableWeights: [1, 2, 3],
+    colorOptions: [],
+    rating: 5
+  });
 
   useEffect(() => {
     const fetchData = async () => {
@@ -69,6 +85,45 @@ export default function ManagementPortal() {
       alert('Failed to save settings.');
     } finally {
       setIsSavingSettings(false);
+    }
+  };
+
+  const handleSaveCake = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+    try {
+      const cakeId = isEditingCake?.id || doc(collection(db, 'cakes')).id;
+      const finalData = { ...formData, id: cakeId };
+      await setDoc(doc(db, 'cakes', cakeId), finalData);
+      
+      // Update local state
+      if (isEditingCake) {
+        setCakes(cakes.map(c => c.id === cakeId ? (finalData as Cake) : c));
+      } else {
+        setCakes([...cakes, finalData as Cake]);
+      }
+      
+      setShowCakeForm(false);
+      setIsEditingCake(null);
+      alert('Masterpiece archived successfully!');
+    } catch (err) {
+      console.error(err);
+      alert('Failed to save masterpiece.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleDeleteCake = async (id: string) => {
+    if (!confirm('Are you sure you want to delete this masterpiece from the archives?')) return;
+    try {
+      await setDoc(doc(db, 'cakes', id), { ...cakes.find(c => c.id === id), deleted: true }); // Soft delete or actual delete
+      // Actually let's use deleteDoc if we want to be thorough
+      // But let's stick to state for now to avoid accidental data loss if they don't have backups
+      setCakes(cakes.filter(c => c.id !== id));
+      alert('Masterpiece removed.');
+    } catch (err) {
+      console.error(err);
     }
   };
 
@@ -177,7 +232,7 @@ export default function ManagementPortal() {
                      <p className="text-[9px] font-bold text-emerald uppercase tracking-widest">Master Artisan</p>
                   </div>
                   <div className="w-12 h-12 bg-slate-200 rounded-2xl overflow-hidden border-2 border-white shadow-lg">
-                     <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&q=80" alt="Avatar" />
+                     <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&q=80&w=200" alt="Avatar" />
                   </div>
                </div>
             </div>
@@ -364,8 +419,21 @@ export default function ManagementPortal() {
                         <div className="relative h-60">
                            <img src={cake.imageUrl} className="w-full h-full object-cover transition-transform group-hover:scale-105 duration-700" alt={cake.name} />
                            <div className="absolute top-4 right-4 flex space-x-2">
-                              <button className="w-8 h-8 bg-white/90 backdrop-blur rounded-lg flex items-center justify-center text-slate-600 hover:text-emerald transition-colors shadow-lg">
+                              <button 
+                                onClick={() => {
+                                  setIsEditingCake(cake);
+                                  setFormData(cake);
+                                  setShowCakeForm(true);
+                                }}
+                                className="w-8 h-8 bg-white/90 backdrop-blur rounded-lg flex items-center justify-center text-slate-600 hover:text-emerald transition-colors shadow-lg"
+                              >
                                  <Settings className="w-4 h-4" />
+                              </button>
+                              <button 
+                                onClick={() => handleDeleteCake(cake.id)}
+                                className="w-8 h-8 bg-white/90 backdrop-blur rounded-lg flex items-center justify-center text-slate-600 hover:text-ruby transition-colors shadow-lg"
+                              >
+                                 <Trash2 className="w-4 h-4" />
                               </button>
                            </div>
                         </div>
@@ -385,6 +453,7 @@ export default function ManagementPortal() {
                 </div>
               </motion.div>
             )}
+            
             {activeTab === 'site-settings' && settings && (
               <motion.div 
                 key="site-settings"
@@ -572,6 +641,129 @@ export default function ManagementPortal() {
               </motion.div>
             )}
          </AnimatePresence>
+
+          {/* Cake Management Modal */}
+          <AnimatePresence>
+            {showCakeForm && (
+              <div className="fixed inset-0 z-[100] flex items-center justify-center p-8">
+                <motion.div 
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  onClick={() => setShowCakeForm(false)}
+                  className="absolute inset-0 bg-slate-950/60 backdrop-blur-md"
+                />
+                <motion.div 
+                  initial={{ opacity: 0, scale: 0.9, y: 20 }}
+                  animate={{ opacity: 1, scale: 1, y: 0 }}
+                  exit={{ opacity: 0, scale: 0.9, y: 20 }}
+                  className="relative w-full max-w-4xl bg-white rounded-[3rem] shadow-3xl overflow-hidden flex flex-col max-h-[90vh]"
+                >
+                  <div className="p-10 border-b border-slate-100 flex justify-between items-center bg-slate-50/50">
+                    <div>
+                      <h2 className="text-3xl font-serif font-bold italic text-slate-900">
+                        {isEditingCake ? 'Refine Masterpiece' : 'New Creation'}
+                      </h2>
+                      <p className="text-xs text-slate-400 font-medium uppercase tracking-widest">Vault Entry Dossier</p>
+                    </div>
+                    <button onClick={() => setShowCakeForm(false)} className="w-12 h-12 rounded-2xl bg-white border border-slate-100 flex items-center justify-center text-slate-400 hover:text-ruby transition-all shadow-sm">
+                      <Plus className="w-6 h-6 rotate-45" />
+                    </button>
+                  </div>
+
+                  <form onSubmit={handleSaveCake} className="flex-grow overflow-y-auto p-12 space-y-10">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
+                      <div className="space-y-4">
+                        <label className="text-[10px] font-bold uppercase tracking-widest text-slate-400 ml-2">Name of Creation</label>
+                        <input 
+                          required
+                          value={formData.name}
+                          onChange={e => setFormData({...formData, name: e.target.value})}
+                          className="w-full px-8 py-5 bg-slate-50 border border-slate-100 rounded-2xl outline-none focus:ring-4 focus:ring-royal-purple/5 font-serif font-bold text-lg" 
+                        />
+                      </div>
+                      <div className="space-y-4">
+                        <label className="text-[10px] font-bold uppercase tracking-widest text-slate-400 ml-2">Base Valuation (KES)</label>
+                        <input 
+                          type="number"
+                          required
+                          value={formData.price}
+                          onChange={e => setFormData({...formData, price: parseInt(e.target.value)})}
+                          className="w-full px-8 py-5 bg-slate-50 border border-slate-100 rounded-2xl outline-none focus:ring-4 focus:ring-emerald/5 font-bold text-lg" 
+                        />
+                      </div>
+                    </div>
+
+                    <div className="space-y-4">
+                      <label className="text-[10px] font-bold uppercase tracking-widest text-slate-400 ml-2">Artistic Description</label>
+                      <textarea 
+                        required
+                        value={formData.description}
+                        onChange={e => setFormData({...formData, description: e.target.value})}
+                        className="w-full px-8 py-6 bg-slate-50 border border-slate-100 rounded-2xl outline-none focus:ring-4 focus:ring-royal-purple/5 text-sm h-32 resize-none font-light italic" 
+                      />
+                    </div>
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
+                      <div className="space-y-4">
+                        <label className="text-[10px] font-bold uppercase tracking-widest text-slate-400 ml-2">Primary Image URL</label>
+                        <div className="flex space-x-4">
+                          <div className="flex-grow">
+                            <input 
+                              required
+                              value={formData.imageUrl}
+                              onChange={e => setFormData({...formData, imageUrl: e.target.value})}
+                              className="w-full px-8 py-5 bg-slate-50 border border-slate-100 rounded-2xl outline-none focus:ring-4 focus:ring-emerald/5 text-xs font-mono" 
+                            />
+                          </div>
+                          {formData.imageUrl && (
+                            <div className="w-16 h-16 rounded-xl overflow-hidden border border-slate-200">
+                              <img src={formData.imageUrl} className="w-full h-full object-cover" alt="Preview" />
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                      <div className="space-y-4">
+                        <label className="text-[10px] font-bold uppercase tracking-widest text-slate-400 ml-2">Artisan Detail URL (Zoomed Texture)</label>
+                        <div className="flex space-x-4">
+                          <div className="flex-grow">
+                            <input 
+                              value={formData.artisanDetailUrl}
+                              onChange={e => setFormData({...formData, artisanDetailUrl: e.target.value})}
+                              placeholder="Optional high-detail image..."
+                              className="w-full px-8 py-5 bg-slate-50 border border-slate-100 rounded-2xl outline-none focus:ring-4 focus:ring-ruby/5 text-xs font-mono" 
+                            />
+                          </div>
+                          {formData.artisanDetailUrl && (
+                            <div className="w-16 h-16 rounded-xl overflow-hidden border border-slate-200">
+                              <img src={formData.artisanDetailUrl} className="w-full h-full object-cover" alt="Detail Preview" />
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-10 pt-6">
+                      <button 
+                        type="button"
+                        onClick={() => setShowCakeForm(false)}
+                        className="py-5 bg-slate-50 text-slate-500 rounded-2xl text-[10px] font-bold uppercase tracking-widest hover:bg-slate-100 transition-all"
+                      >
+                        Abort Entry
+                      </button>
+                      <button 
+                        type="submit"
+                        className="md:col-span-2 py-5 bg-slate-900 text-white rounded-2xl text-[10px] font-bold uppercase tracking-widest hover:bg-emerald transition-all shadow-2xl flex items-center justify-center space-x-3"
+                      >
+                        <Save className="w-4 h-4" />
+                        <span>Archive Masterpiece to Vault</span>
+                      </button>
+                    </div>
+                  </form>
+                </motion.div>
+              </div>
+            )}
+          </AnimatePresence>
       </main>
     </div>
   );
