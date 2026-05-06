@@ -84,7 +84,7 @@ export default function Training() {
               </div>
               <div className="w-full md:w-1/2">
                  <div className="relative aspect-square rounded-full overflow-hidden border-[20px] border-slate-50 group shadow-3xl">
-                    <img src="https://images.unsplash.com/photo-1556910103-1c02745aae4d?auto=format&fit=crop&q=80" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-[3s]" alt="Academy" />
+                    <img src="https://images.unsplash.com/photo-1556910103-1c02745aae4d?auto=format&fit=crop&q=80" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-[3s]" alt="Academy" referrerPolicy="no-referrer" />
                     <div className="absolute inset-0 flex items-center justify-center bg-slate-950/20 group-hover:bg-slate-950/40 transition-all">
                        <button className="w-24 h-24 bg-white text-slate-950 rounded-full flex items-center justify-center shadow-2xl hover:scale-110 transition-all">
                           <Play className="w-8 h-8 fill-current ml-1 text-slate-900" />
@@ -100,7 +100,7 @@ export default function Training() {
            <div className="max-w-full mx-auto w-full flex h-full">
               {courses.map((course, idx) => (
                 <div key={idx} className={`flex-1 group relative overflow-hidden transition-all duration-1000 hover:flex-[1.5] border-r border-slate-50`}>
-                   <img src={course.image} className="absolute inset-0 w-full h-full object-cover opacity-10 group-hover:opacity-30 transition-opacity" alt={course.title} />
+                   <img src={course.image} className="absolute inset-0 w-full h-full object-cover opacity-10 group-hover:opacity-30 transition-opacity" alt={course.title} referrerPolicy="no-referrer" />
                    <div className="relative h-full p-16 md:p-24 flex flex-col justify-between">
                       <div className="space-y-4">
                          <span className={`px-6 py-2 ${course.accent} text-white rounded-xl text-[9px] font-bold uppercase tracking-widest`}>{course.level} Level</span>

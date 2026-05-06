@@ -206,7 +206,7 @@ export default function Home() {
                   <div className="space-y-8 mt-20">
                      <div className="aspect-[3/4] rounded-[3rem] overflow-hidden shadow-2xl border-4 border-white-gold/20">
                         <img 
-                          src="https://images.unsplash.com/photo-1535254973040-607b474cb8c2?auto=format&fit=crop&q=80&w=800" 
+                          src="https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&q=80&w=800" 
                           className="w-full h-full object-cover" 
                           alt="Artisan detail" 
                           referrerPolicy="no-referrer"
