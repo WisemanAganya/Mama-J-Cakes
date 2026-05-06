@@ -149,6 +149,7 @@ export default function Home() {
                  src={slides[currentSlide].image} 
                  className="w-full h-full object-cover opacity-60" 
                  alt={slides[currentSlide].title} 
+                 referrerPolicy="no-referrer"
                />
                {/* Vignette Overlay for better contrast */}
                <div className="absolute inset-0 bg-gradient-to-b from-slate-950/80 via-transparent to-slate-950/90" />
@@ -204,7 +205,12 @@ export default function Home() {
                <div className="grid grid-cols-2 gap-8">
                   <div className="space-y-8 mt-20">
                      <div className="aspect-[3/4] rounded-[3rem] overflow-hidden shadow-2xl border-4 border-white-gold/20">
-                        <img src="https://images.unsplash.com/photo-1558961363-fa8fdf82db35?auto=format&fit=crop&q=80&w=800" className="w-full h-full object-cover" alt="Artisan detail" />
+                        <img 
+                          src="https://images.unsplash.com/photo-1535254973040-607b474cb8c2?auto=format&fit=crop&q=80&w=800" 
+                          className="w-full h-full object-cover" 
+                          alt="Artisan detail" 
+                          referrerPolicy="no-referrer"
+                        />
                      </div>
                      <div className="bg-royal-blue/5 p-12 rounded-[3rem] space-y-4 border border-royal-blue/10">
                         <Heart className="w-8 h-8 text-royal-blue" />
@@ -219,7 +225,12 @@ export default function Home() {
                         <p className="text-sm text-white/60">Flavors that roar with the passion of the Great Rift Valley.</p>
                      </div>
                      <div className="aspect-[3/4] rounded-[3rem] overflow-hidden shadow-2xl border-4 border-vibrant-pink/20">
-                        <img src="https://images.unsplash.com/photo-1562233228-5079a255f5c6?auto=format&fit=crop&q=80&w=800" className="w-full h-full object-cover" alt="Artisan detail" />
+                        <img 
+                          src="https://images.unsplash.com/photo-1621303837174-89787a7d4729?auto=format&fit=crop&q=80&w=800" 
+                          className="w-full h-full object-cover" 
+                          alt="Artisan detail" 
+                          referrerPolicy="no-referrer"
+                        />
                      </div>
                   </div>
                </div>

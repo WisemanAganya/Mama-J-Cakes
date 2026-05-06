@@ -39,7 +39,7 @@ export default function About() {
           </div>
           <div className="relative">
               <div className="aspect-[4/5] rounded-[4rem] overflow-hidden shadow-3xl border-8 border-white">
-                <img src="https://images.unsplash.com/photo-1556910103-1c02745aae4d?auto=format&fit=crop&q=80&w=1000" className="w-full h-full object-cover" alt="Artisan at work" />
+                <img src="https://images.unsplash.com/photo-1556910103-1c02745aae4d?auto=format&fit=crop&q=80&w=1000" className="w-full h-full object-cover" alt="Artisan at work" referrerPolicy="no-referrer" />
               </div>
              <div className="absolute -bottom-12 -right-12 bg-white p-12 rounded-[3rem] shadow-2xl space-y-4 max-w-sm border border-slate-50">
                 <Sparkles className="w-10 h-10 text-emerald" />

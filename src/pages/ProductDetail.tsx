@@ -188,6 +188,7 @@ export default function ProductDetail() {
                     src={cake.artisanDetailUrl} 
                     className="w-full h-full object-cover transition-transform duration-700 group-hover/zoom:scale-125" 
                     alt="Detail Texture" 
+                    referrerPolicy="no-referrer"
                   />
                 </div>
                 <p className="text-slate-400 font-sans text-[10px] leading-relaxed uppercase tracking-widest font-bold">
